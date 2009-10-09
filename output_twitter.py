@@ -54,7 +54,7 @@ class OutputTwitter:
 
         api = twitter.Api(username=config['username'], password=config['password'])
 
-        if not api.GetFriends()
+        if not api.GetFriends():
             log.warn("Invalid twitter username or password")
             return
 
