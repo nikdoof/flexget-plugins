@@ -12,17 +12,17 @@ class OutputTwitter:
         Send a Twitter for each (downloaded) entries.
 
         Config:
-	  username	: twitter username (required)
-	  password	: twitter password (required)
-          to            : the recipients
-	  apiurl	: API URL 
-          active        : is this plugin active or not ?
+            username	: twitter username (required)
+            password	: twitter password (required)
+            to          : the recipients
+            apiurl      : API URL 
+            active      : is this plugin active or not ?
 
         Config basic example:
 
-	twitter:
-	  username: mythbox
-	  password: blargh
+            twitter:
+                username: mythbox
+                password: blargh
 
     """
     def validator(self):
@@ -32,13 +32,13 @@ class OutputTwitter:
         twitter.accept('text', key='to')
         twitter.accept('text', key='username', required=True)
         twitter.accept('text', key='password', required=True)
-	twitter.accept('text', key='apiurl')
+	    twitter.accept('text', key='apiurl')
         return twitter
 
     def get_config(self, feed):
         config = feed.config['twitter']
         config.setdefault('active', True)
-	config.setdefault('apiurl', 'http://twitter.com/')
+	    config.setdefault('apiurl', 'http://twitter.com/')
         return config
 
     def feed_exit(self, feed):
@@ -52,21 +52,20 @@ class OutputTwitter:
         if feed.manager.options.learn:
             return
 
-	api = twitter.Api(username=config['username'], password=config['password')
+	    api = twitter.Api(username=config['username'], password=config['password'])
 
-	if not api.GetFriends()
-	    # Invalid user
-	    return
-
+	    if not api.GetFriends()
+	        log.warn("Invalid twitter username or password")
+	        return
 	
         entries_count = len(feed.accepted)
         if entries_count == 0:
             return # don't send empty twits
 
         for entry in feed.accepted:
-            content = "%s queued" % entry['title']
+            content = "%s found and queued" % entry['title']
 	    if len(content) > 120:
-		return
+		    return
 	    else:
 	        api.PostUpdate(content)
 
