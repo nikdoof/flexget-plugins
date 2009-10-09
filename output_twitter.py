@@ -1,5 +1,6 @@
 import logging
 from flexget.plugin import *
+import twitter
 
 __pychecker__ = 'unusednames=parser'
 
@@ -11,10 +12,10 @@ class OutputTwitter:
         Send a Twitter for each (downloaded) entries.
 
         Config:
-	  username	: twitter username
-	  password	: twitter password
-          to            : the recipients (required)
-	  apiurl	: API URL (optional)
+	  username	: twitter username (required)
+	  password	: twitter password (required)
+          to            : the recipients
+	  apiurl	: API URL 
           active        : is this plugin active or not ?
 
         Config basic example:
@@ -22,14 +23,13 @@ class OutputTwitter:
 	twitter:
 	  username: mythbox
 	  password: blargh
-          to: nikdoof, salkunh
 
     """
     def validator(self):
         from flexget import validator
         twitter = validator.factory('dict')
         twitter.accept('boolean', key='active')
-        twitter.accept('text', key='to', required=True)
+        twitter.accept('text', key='to')
         twitter.accept('text', key='username', required=True)
         twitter.accept('text', key='password', required=True)
 	twitter.accept('text', key='apiurl')
@@ -38,7 +38,7 @@ class OutputTwitter:
     def get_config(self, feed):
         config = feed.config['twitter']
         config.setdefault('active', True)
-	config.setdefault('apirul', 'http://twitter.com/')
+	config.setdefault('apiurl', 'http://twitter.com/')
         return config
 
     def feed_exit(self, feed):
@@ -52,6 +52,13 @@ class OutputTwitter:
         if feed.manager.options.learn:
             return
 
+	api = twitter.Api(username=config['username'], password=config['password')
+
+	if not api.GetFriends()
+	    # Invalid user
+	    return
+
+	
         entries_count = len(feed.accepted)
         if entries_count == 0:
             return # don't send empty twits
@@ -59,8 +66,8 @@ class OutputTwitter:
         for entry in feed.accepted:
             content = "%s queued" % entry['title']
 	    if len(content) > 120:
-		# arse!
+		return
 	    else:
-	        # Send Twitter
+	        api.PostUpdate(content)
 
 register_plugin(OutputTwitter, 'twitter')
