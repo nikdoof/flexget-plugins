@@ -1,0 +1,4 @@
+Flexget Plugins By Andrew Williams (nikdoof)
+
+output_twitter - For each entry produce a twitter posting. 
+                 Requires python-twitter 0.5 or above.

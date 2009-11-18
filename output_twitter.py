@@ -1,3 +1,7 @@
+""" OutputTwitter - Produces a twitter post for each entry
+
+    MIT Licensed, derrivative work of Flexget module OutputEmail """
+
 import logging
 from flexget.plugin import *
 
