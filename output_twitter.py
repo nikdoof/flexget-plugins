@@ -75,6 +75,6 @@ class OutputTwitter:
 try:
     import twitter
 except ImportError:
-    log.error('Unable to import module twitter, is python-twitter installed?')
+    raise PluginError('Unable to import module twitter, python-twitter is required to use output_twitter')
 else:
     register_plugin(OutputTwitter, 'twitter')
