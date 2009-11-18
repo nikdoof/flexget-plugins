@@ -1,6 +1,5 @@
 import logging
 from flexget.plugin import *
-import twitter
 
 __pychecker__ = 'unusednames=parser'
 
@@ -69,4 +68,9 @@ class OutputTwitter:
             else:
                 api.PostUpdate(content)
 
-register_plugin(OutputTwitter, 'twitter')
+try:
+    import twitter
+except ImportError:
+    log.error('Unable to import module twitter, is python-twitter installed?')
+else:
+    register_plugin(OutputTwitter, 'twitter')
