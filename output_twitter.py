@@ -66,11 +66,12 @@ class OutputTwitter:
             return # don't send empty twits
 
         for entry in feed.accepted:
-            content = "%s found and queued" % entry['title']
-            if len(content) > 120:
-                return
+            if len(entry['title']) > 103:
+                content = "%s... found and queued" % entry['title'][:104]
             else:
-                api.PostUpdate(content)
+                content = "%s found and queued" % entry['title']
+            log.debug("Sending Twitter: %s", content)
+            api.PostUpdate(content)
 
 try:
     import twitter
