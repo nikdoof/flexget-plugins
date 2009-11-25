@@ -4,3 +4,5 @@ output_twitter -  For each entry produce a twitter posting.
                   Requires python-twitter 0.5 or above.
 
 output_rtorrent - Load accepted entries into rtorrent
+
+output_log	- Write entries to a log file
