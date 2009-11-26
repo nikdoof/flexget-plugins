@@ -40,21 +40,24 @@ class OutputTwitter:
 
     def get_config(self, feed):
         config = feed.config['twitter']
-        config.setdefault('active', True)
+        config.setdefault('active', False)
         config.setdefault('apiurl', 'http://twitter.com/')
         return config
 
-    def feed_exit(self, feed):
+    def on_feed_exit(self, feed):
         """Send email at exit."""
         config = self.get_config(feed)
 
         if not config['active']:
+            log.debug("twitter plugin not active")
             return
 
         # don't send twits when learning
         if feed.manager.options.learn:
+            log.debug("learn mode, skipping")
             return
 
+        log.debug("Loading twitter api")
         api = twitter.Api(username=config['username'], password=config['password'])
 
         if not api.GetFriends():
@@ -78,4 +81,5 @@ try:
 except ImportError:
     raise PluginError('Unable to import module twitter, python-twitter is required to use output_twitter')
 else:
+    log.debug("Registering plugin: twitter")
     register_plugin(OutputTwitter, 'twitter')
