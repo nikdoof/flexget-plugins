@@ -5,8 +5,6 @@
 import logging
 from flexget.plugin import *
 
-__pychecker__ = 'unusednames=parser'
-
 log = logging.getLogger('twitter')
 
 class OutputTwitter:
@@ -18,7 +16,6 @@ class OutputTwitter:
             username	: twitter username (required)
             password	: twitter password (required)
             to          : the recipients
-            apiurl      : API URL 
             active      : is this plugin active or not ?
 
         Config basic example:
@@ -35,13 +32,11 @@ class OutputTwitter:
         twitter.accept('text', key='to')
         twitter.accept('text', key='username', required=True)
         twitter.accept('text', key='password', required=True)
-        twitter.accept('text', key='apiurl')
         return twitter
 
     def get_config(self, feed):
         config = feed.config['twitter']
         config.setdefault('active', False)
-        config.setdefault('apiurl', 'http://twitter.com/')
         return config
 
     def on_feed_exit(self, feed):
