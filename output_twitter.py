@@ -25,6 +25,9 @@ class OutputTwitter:
                 password: blargh
 
     """
+
+    _validated = False
+
     def validator(self):
         from flexget import validator
         twitter = validator.factory('dict')
@@ -55,9 +58,12 @@ class OutputTwitter:
         log.debug("Loading twitter api")
         api = twitter.Api(username=config['username'], password=config['password'])
 
-        if not api.GetFriends():
-            log.warn("Invalid twitter username or password")
-            return
+        if not self._validated:
+            try:
+                api.GetFriends()
+            except TwitterError:
+                log.warn("Error testing twitter connectivity, check your username/password")
+                return
 
         entries_count = len(feed.accepted)
         if entries_count == 0:
