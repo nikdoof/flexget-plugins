@@ -7,6 +7,7 @@ from flexget.plugin import *
 
 log = logging.getLogger('twitter')
 
+
 class OutputTwitter:
 
     """
@@ -56,7 +57,8 @@ class OutputTwitter:
             return
 
         log.debug("Loading twitter api")
-        api = twitter.Api(username=config['username'], password=config['password'])
+        api = twitter.Api(username=config['username'],
+                          password=config['password'])
 
         if not self._validated:
             try:
@@ -65,8 +67,7 @@ class OutputTwitter:
                 log.warn("Error testing twitter connectivity, check your username/password")
                 return
 
-        entries_count = len(feed.accepted)
-        if entries_count == 0:
+        if len(feed.accepted) == 0:
             return # don't send empty twits
 
         for entry in feed.accepted:
