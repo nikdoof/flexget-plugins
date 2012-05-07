@@ -43,8 +43,15 @@ class OutputTwitter:
         config.setdefault('active', False)
         return config
 
+    def on_process_start(self, feed, config):
+        try:
+            import twitter
+        except ImportError:
+            raise PluginError('Unable to import module twitter, python-twitter is required to use output_twitter')
+
     def on_feed_exit(self, feed):
         """Send email at exit."""
+        import twitter
         config = self.get_config(feed)
 
         if not config['active']:
@@ -78,10 +85,5 @@ class OutputTwitter:
             log.debug("Sending Twitter: %s", content)
             api.PostUpdate(content)
 
-try:
-    import twitter
-except ImportError:
-    raise PluginError('Unable to import module twitter, python-twitter is required to use output_twitter')
-else:
-    log.debug("Registering plugin: twitter")
-    register_plugin(OutputTwitter, 'twitter')
+log.debug("Registering plugin: twitter")
+register_plugin(OutputTwitter, 'twitter')
