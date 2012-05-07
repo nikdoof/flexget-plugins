@@ -30,7 +30,7 @@ class OutputXMPP:
         config.setdefault('nickname', 'FlexGet')
         return config
 
-    def on_process_start(self, feed, config):
+    def on_process_start(self, feed):
         try:
             from xmpp import Client, Message, JID, Presence
         except ImportError:
@@ -53,7 +53,7 @@ class OutputXMPP:
             self.client.disconnect()
         self.client = None
 
-    def on_feed_output(self, feed, config):
+    def on_feed_output(self, feed):
         from xmpp import Client, Message, JID, Presence
 
         config = self.get_config(feed)
