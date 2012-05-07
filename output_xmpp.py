@@ -23,9 +23,8 @@ class OutputXMPP:
         config.accept('text', key='message_type')
         return config
 
-    def prepare_config(self, config):
-        if isinstance(config, bool):
-            config = {'enabled': config}
+    def get_config(self, feed):
+        config = feed.config['xmpp']
         config.setdefault('message_format', '{{title}} has started downloading')
         config.setdefault('message_type', 'headline')
         config.setdefault('nickname', 'FlexGet')
@@ -37,6 +36,7 @@ class OutputXMPP:
         except ImportError:
             raise PluginError("output_xmpp requires xmppy, either `pip install xmpppy` or `apt-get install python-xmpp`")
 
+        config = self.get_config(feed)
         debug = []
         self.jid = JID(config.get('jid'))
         self.client = Client(self.jid, debug=debug)
@@ -56,6 +56,7 @@ class OutputXMPP:
     def on_feed_output(self, feed, config):
         from xmpp import Client, Message, JID, Presence
 
+        config = self.get_config(feed)
         if config['enabled'] is None or feed.manager.options.learn:
             log.debug('XMPP plugin disabled or in learning mode, skipping.')
             return
