@@ -15,6 +15,7 @@ class OutputXMPP:
         config = validator.factory('dict')
         config.accept('text', key='jid', required=True)
         config.accept('text', key='password', required=True)
+        config.accept('text', key='to', required=True)
         config.accept('text', key='nickname')
         config.accept('text', key='connection_host')
         config.accept('integer', key='connection_port')
